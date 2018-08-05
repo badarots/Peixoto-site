@@ -42,16 +42,17 @@
     var host = window.location.host;
     var port = window.location.port;
 
-    if (protocol === "file:") {
-        wsuri = "ws://201.131.170.231:8080/ws";
-    } else {
-        if (protocol == "https:"){
-            wsuri = "wss://" + host;
-        } else {
-            wsuri = "ws://" + host;
-        }
-        wsuri += window.location.pathname + "ws";
-    }
+    // if (protocol === "file:") {
+    //     wsuri = "ws://201.131.170.231:8080/ws";
+    // } else {
+    //     if (protocol == "https:"){
+    //         wsuri = "wss://" + host;
+    //     } else {
+    //         wsuri = "ws://" + host;
+    //     }
+    //     wsuri += window.location.pathname + "ws";
+    // }
+    wsuri = "ws://201.131.170.231:8080/ws";
     document.getElementById('wsuri').value = wsuri
 
     // 

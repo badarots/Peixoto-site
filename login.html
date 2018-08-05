@@ -23,7 +23,7 @@
   </div>
 
   <div class='line-row'>
-    <label>Url
+    <label>Urls
       <input type="text" id="wsuri">
     </label>
   </div>
@@ -52,8 +52,8 @@
     //     }
     //     wsuri += window.location.pathname + "ws";
     // }
-    wsuri = "ws://201.131.170.231:8080/ws";
-    document.getElementById('wsuri').value = wsuri
+    wsuri = ["ws://201.131.170.231:8080/ws", "ws://192.168.1.70/ws"];
+    document.getElementById('wsuri').value = wsuri.toString();
 
     // 
     var conectar = function conectar(event){
@@ -61,7 +61,8 @@
 
         var user_id = $("#usuario").val();
         var user_secret = $("#senha").val();
-        wsuri = document.getElementById("wsuri").value;
+        wsuri = document.getElementById("wsuri").value.split(",");
+        console.log(wsuri)
         var dispositivo = 'raspi';
         if (document.getElementById('teste').checked) { dispositivo = 'teste'}
 

@@ -5,12 +5,18 @@ var dispositivo
 window.onload = function(){ ellog = document.getElementById('log'); };
 
 function connect(user_id, user_secret, disp) {
-    dispositivo = disp;    
+    dispositivo = disp;  
+
+    var transport = new Array(wsuri.length);
+    for (var i = 0; i < transport.length; i++) {
+        transport[i] = { 'type': 'websocket', 'url': wsuri[i]};
+    }
+    console.log(wsuri, transport);
 
     connection = new autobahn.Connection({
-        url: wsuri,
+        transports: transport,
         realm: "realm1",
-
+        
         authmethods: ["wampcra"],
         authid: user_id,
         onchallenge: onchallenge

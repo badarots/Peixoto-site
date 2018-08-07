@@ -28,6 +28,9 @@
 
     <tr>
       <td>Tratador</td>
+      <td class="form-basic">
+        <input type="text" id="input_tratador" placeholder="Freq." style="width: 100px"></input>
+      </td>
       <td>
         <label class="switch" id="switch_tratador">
           <input type="checkbox">
@@ -89,9 +92,11 @@
         var atuador = id.substring(id.lastIndexOf('_') + 1);
         var data = {};
         data[atuador] = !interruptor.checked;
+        if (atuador == "tratador")  
+          data[atuador] = document.getElementById("input_tratador").value;
 
         var acao = 'DESLIGAR';
-        if (data[atuador]) acao = 'LIGAR';        
+        if (data[atuador]) acao = 'LIGAR';
         if (confirm('Deseja ' + acao + ' o ' + atuador + '?')) {
 
           data = JSON.stringify(data);

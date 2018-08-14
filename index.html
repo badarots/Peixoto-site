@@ -3,52 +3,107 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Peixoto</title>
+  <title>Peixoto</title>
 
-    <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/jquery.mask.min.js"></script>
-    <script>AUTOBAHN_DEBUG = false;</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="assets/jquery.mask.min.js"></script>
+  <script>AUTOBAHN_DEBUG = false;</script>
 
-    <script type="text/javascript" src="assets/autobahn.min.js"></script>
-    <script type="text/javascript" src="assets/connection.js"></script>
+  <script type="text/javascript" src="assets/autobahn.min.js"></script>
+  <script type="text/javascript" src="assets/wamp_connection.js"></script>
 
-    <script type="text/javascript" src="assets/formToJson.js"></script>
-    <!--<script type="text/javascript" src="assets/app.js"></script>-->
+  <script type="text/javascript" src="assets/formToJson.js"></script>
+  <!--<script type="text/javascript" src="assets/app.js"></script>-->
 
 </head>
 
 
 <header>
-    <h1>Peixoto</h1>
-    <a href='#' id="status_conexao" onclick="close_conection()">Desconectado</a>
+
+  <h1>Peixoto</h1>
+  <a href='#' id="status_conexao" onclick="close_connection()">Desconectado</a>
+
 </header>
 
 <ul id="pages_header" style="display: none">
-    <a href="#" id="page_sensores" class="pages" page="sensores">Sensores</a>
-    <a href="#" id="page_ativar" class="pages" page="ativar">Ativar</a>
-    <a href="#" id="page_agenda" class="pages" page="agenda">Agendar</a>
+
+  <!-- <a href="#" id="page_sensores" class="pages" page="sensores">Sensores</a> -->
+  <a href="#" id="page_ativar" class="pages" page="ativar">Ativar</a>
+  <a href="#" id="page_agenda" class="pages" page="agenda">Agendar</a>
+
 </ul>
 
 <div class="main-content">
 
-    <div id="content"></div>
+  <div id="content"></div>
 
-    <div class="results">
-        <h2 class="results__heading">Log</h2>
-        <pre class="results__display-wrapper" id="log"><code class="results__display"></code></pre>
-    </div>
+  <div class="results">
+    <h2 class="results__heading">Log</h2>
+    <pre class="results__display-wrapper" id="log"><code class="results__display"></code></pre>
+  </div>
+
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-        $('#content').load("login.html");
-    });
+  var ellog;
+
+  var connection = new WAMPConnection();
+
+  var close_connection; // variável que guarda a função de término de conexão
+  
+  function setLink(page) {
+    if (page == "login") {
+      var show = "none";
+    } else {
+      var show = "block";
+    }
+    document.getElementById("pages_header").style.display = show;
+
+    $("#content").load(page + ".html");
+    // muda a o cor dos botoes para sinalizar qual form. está aberto
+    $(".pages").removeClass("active");
+    $('#page_' + page).addClass("active");
+
+    // console.log(page);
+  }
+
+  function log(m) {
+    ellog.innerHTML = m + '\n' + ellog.innerHTML;
+    ellog.scrollTop = 0;
+  }
+
+  window.onload = function() {
+
+    ellog = document.getElementById('log');
+    
+    $(".pages").click(function(){ setLink($(this).attr('page')) });
+
+    setLink('login');
+
+    connection.onopen = function(session) {
+      log("Conectado")
+
+      setLink("ativar");
+      $("#status_conexao").html("Conectado");
+
+      close_connection = connection.close;
+    };
+
+    connection.onclose = function(reason, details) {
+      log("Desconectado", reason);
+      
+      setLink("login");
+      $("#status_conexao").html("Desconectado");
+    };
+    
+  };
+
 </script>
 
 </body>

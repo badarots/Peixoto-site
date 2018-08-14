@@ -35,41 +35,46 @@
 <script type="text/javascript">
   
   // encontra endereço padrão de conexão
-  var wsuri = null;
+  var wsuri = ["ws://201.131.170.231:8080/ws", "ws://192.168.1.70/ws"];
+
+  function conectar(event) {
+    event.preventDefault();
+
+    var user_id = $("#usuario").val();
+    var user_secret = $("#senha").val();
+
+    wsuri = document.getElementById("wsuri").value.replace(/\s/g, '').split(",");
+
+    var dispositivo = 'raspi';
+    if (document.getElementById('teste').checked) { dispositivo = 'teste'}
+
+    connection.open(wsuri, user_id, user_secret, 'com.' + dispositivo);
+}
 
   $(document).ready(function() {
-    var protocol = window.location.protocol;
+
+    /* var protocol = window.location.protocol;
     var host = window.location.host;
     var port = window.location.port;
 
-    // if (protocol === "file:") {
-    //     wsuri = "ws://201.131.170.231:8080/ws";
-    // } else {
-    //     if (protocol == "https:"){
-    //         wsuri = "wss://" + host;
-    //     } else {
-    //         wsuri = "ws://" + host;
-    //     }
-    //     wsuri += window.location.pathname + "ws";
-    // }
-    wsuri = ["ws://201.131.170.231:8080/ws", "ws://192.168.1.70/ws"];
+    if (protocol === "file:") {
+        wsuri = "ws://201.131.170.231:8080/ws";
+    } else {
+        if (protocol == "https:"){
+            wsuri = "wss://" + host;
+        } else {
+            wsuri = "ws://" + host;
+        }
+        wsuri += window.location.pathname + "ws";
+    } */
+
     document.getElementById('wsuri').value = wsuri.toString();
 
-    // 
-    var conectar = function conectar(event){
-        event.preventDefault();
+    // conectar-se usando credenciais
+    $("#conectar").on('click', conectar);
 
-        var user_id = $("#usuario").val();
-        var user_secret = $("#senha").val();
-        wsuri = document.getElementById("wsuri").value.split(",");
-        console.log(wsuri)
-        var dispositivo = 'raspi';
-        if (document.getElementById('teste').checked) { dispositivo = 'teste'}
-
-        connect(user_id, user_secret, dispositivo);
-    }
-      // conectar-se usando credenciais
-      $("#conectar").on('click', conectar);
     });
+
+
 </script>
 </body>

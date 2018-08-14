@@ -179,8 +179,8 @@
     i = 0;
   }
 
-  function attElements(){
-    get_status('agenda').then(
+  function attElements() {
+    connection.status('agenda').then(
 
       function (msg) {
         msg = JSON.parse(msg);
@@ -249,7 +249,7 @@
 
       // ...this is where we’d actually do something with the form data...
       // Envia os dados como um string em formato json
-      send(msg);
+      connection.send(msg);
     };
 
     /*

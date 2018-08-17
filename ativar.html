@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <body>
-  
+
   <div class="title-row" id="agenda_titulo">
     <h1>Teste</h1>
   </div>
@@ -14,14 +14,14 @@
       <td>Temperatura do ar</td>
       <td id='ar_temperatura'></td>
     </tr>
-    
+
     <tr>
       <td>Umidade do ar</td>
       <td id='ar_umidade'></td>
     </tr>
-    
+
     <tr></tr>
-    
+
     <tr>
       <td>Refletores</td>
       <td>
@@ -56,9 +56,9 @@
     </tr>
 
     <tr>
-      <td>Teste</td>
+      <td title="Se ativo impede o funcionamento dos temporizadores externos.">Ativar</td>
       <td>
-        <label class="switch" id="switch_teste">
+        <label class="switch" id="switch_controlador">
           <input type="checkbox">
           <span class="slider round"></span>
         </label>
@@ -94,7 +94,7 @@
       var atuador = id.substring(id.lastIndexOf('_') + 1);
       var data = {};
       data[atuador] = !interruptor.checked;
-      if (atuador == "tratador")  
+      if (atuador == "tratador")
         data[atuador] = document.getElementById("input_tratador").value;
 
       var acao = 'DESLIGAR';
@@ -110,7 +110,7 @@
             switch_atualizar(resposta);
           },
           function (erro) { console.log('erro ao receber resposta do interruptor: ', erro); }
-        );          
+        );
       }
     }
 
@@ -118,7 +118,7 @@
       var msg = JSON.parse(payload);
       console.log('sensores', msg);
       // formato da mensagem: msg = {'ar_temperatura': '13.5', 'ar_umidade': '50.6'}
-      
+
       for (var key in msg) {
         var sufix = '';
         if (key == 'ar_temperatura') sufix = '°C';
